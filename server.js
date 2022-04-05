@@ -11,7 +11,6 @@ import connectDB from './db/connect.js'
 import authRouter from './routes/authRoutes.js'
 import tasksRouter from './routes/tasksRoutes.js'
 
-
 // middleware
 import notFoundMiddleware from './middleware/not-found.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
@@ -20,8 +19,11 @@ import errorHandlerMiddleware from './middleware/error-handler.js'
 app.use(express.json())
 
 app.get("/", (req, res) => {
-    res.send("Welcome!")
-    //throw new Error("error")
+    res.json({ msg: "Welcome!"})
+})
+
+app.get("/api/v1", (req, res) => {
+    res.json({ msg: "API"})
 })
 
 app.use("/api/v1/auth", authRouter)
@@ -30,7 +32,7 @@ app.use("/api/v1/tasks", tasksRouter)
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 4000
 
 const start = async () => {
     try {
