@@ -11,7 +11,9 @@ import {
     REGISTER_USER_ERROR,
     LOGIN_USER_BEGIN,
     LOGIN_USER_SUCCESS,
-    LOGIN_USER_ERROR
+    LOGIN_USER_ERROR,
+    TOGGLE_SIDEBAR,
+    LOGOUT_USER
 } from "./actions"
 
 const user = localStorage.getItem("user")
@@ -26,7 +28,8 @@ const initialState = {
     user: user? JSON.parse(user):null,
     token: token,
     userLocation: userLocation || "",
-    jobLocation: userLocation || ""
+    jobLocation: userLocation || "",
+    showSidebar: false
 }
 
 const AppContext = React.createContext()
@@ -97,8 +100,14 @@ const AppProvider = ({children}) => {
         clearAlert()
         console.log(currentUser)
     }
-
-    return <AppContext.Provider value={{...state, displayAlert, registerUser, loginUser}}>
+    const toggleSidebar = () => {
+        dispatch({type: TOGGLE_SIDEBAR})
+    }
+    const logoutUser = () => {
+        dispatch({type: LOGOUT_USER})
+        removeUserFromLocalStorage()
+    }
+    return <AppContext.Provider value={{...state, displayAlert, registerUser, loginUser, toggleSidebar, logoutUser}}>
         {children}
     </AppContext.Provider>
 
