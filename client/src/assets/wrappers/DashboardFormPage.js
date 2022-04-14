@@ -9,22 +9,20 @@ const Wrapper = styled.section`
     margin-top: 0;
   }
   .form {
-    margin: 0;
+    margin: auto;
     border-radius: 0;
     box-shadow: none;
     padding: 0;
     max-width: 100%;
-    width: 100%;
+    width: 70%;
   }
   .form-row {
     margin-bottom: 0;
   }
-  .form-center {
-    display: grid;
-    row-gap: 0.5rem;
-  }
+
   .form-center button {
-    align-self: end;
+    align-items: center;
+    margin: auto;
     height: 35px;
     margin-top: 1rem;
   }
@@ -57,9 +55,6 @@ const Wrapper = styled.section`
   @media (min-width: 1120px) {
     .form-center {
       grid-template-columns: 1fr 1fr 1fr;
-    }
-    .form-center button {
-      margin-top: 0;
     }
   }
 `

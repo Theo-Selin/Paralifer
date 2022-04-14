@@ -53,7 +53,7 @@ const Profile = () => {
           handleChange={(e) => setLocation(e.target.value)} 
         />
         <button className="btn btn-block" type="submit" disabled={isLoading}>
-          {isLoading ? "Please wait..." : "save changes"}
+          {isLoading ? "Please wait..." : "update profile"}
         </button>
       </div>
       </form>
