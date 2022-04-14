@@ -1,5 +1,16 @@
+import Task from '../models/Task.js'
+import { StatusCodes } from 'http-status-codes'
+import { BadRequestError, UnauthenticatedError } from '../errors/index.js'
+
 const createTask = async (req, res) => {
-    res.send("create a task")
+    const {title, details} = req.body
+
+    if(!title || !details) {
+        throw new BadRequestError("Please provide all values")
+    }
+    req.body.createdBy = req.user.userId
+    const task = await Task.create(req.body)
+    res.status(StatusCodes.CREATED).json({ task })
 }
 const getAllTasks = async (req, res) => {
     res.send("get all tasks")
