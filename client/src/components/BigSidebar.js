@@ -4,7 +4,7 @@ import Logo from '../components/Logo'
 import Wrapper from '../assets/wrappers/BigSidebar'
 
 const BigSidebar = () => {
-  const {showSidebar, toggleSidebar} = useAppContext()
+  const {showSidebar} = useAppContext()
   return (
       <Wrapper>
         <div className={showSidebar ? "sidebar-container" : "sidebar-container show-sidebar"}>
@@ -12,7 +12,7 @@ const BigSidebar = () => {
             <header>
               <Logo />
             </header>
-            <NavLinks toggleSidebar={toggleSidebar} />
+            <NavLinks  />
           </div>
         </div>
       </Wrapper>
