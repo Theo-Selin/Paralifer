@@ -1,10 +1,11 @@
-import React from 'react'
+import Wrapper from '../assets/wrappers/JobInfo'
 
-const TaskInfo = () => {
+const TaskInfo = ({icon, text}) => {
   return (
-    <h2>
-      task info
-    </h2>
+    <Wrapper>
+      <span className="icon">{icon}</span>
+      <span className="text">{text}</span>
+    </Wrapper>
   )
 }
 
