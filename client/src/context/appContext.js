@@ -17,6 +17,13 @@ import {
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  HANDLE_CHANGE,
+  CLEAR_VALUES,
+  CREATE_TASK_BEGIN,
+  CREATE_TASK_SUCCESS,
+  CREATE_TASK_ERROR,
+  GET_TASKS_BEGIN,
+  GET_TASKS_SUCCESS
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -31,8 +38,20 @@ const initialState = {
   user: user ? JSON.parse(user) : null,
   token: token,
   userLocation: userLocation || "",
-  jobLocation: userLocation || "",
   showSidebar: false,
+  isEditing: false,
+  editTaskId: "",
+  details: "",
+  title: "",
+  taskLocation: userLocation || "",
+  taskTypeOptions: ["quit", "practice", "create", "relax"],
+  taskType: "practice",
+  statusOptions: ["started", "finished", "pending"],
+  status: "pending",
+  tasks: [],
+  totalTasks: 0,
+  numOfPages: 1,
+  page: 1,
 };
 
 const AppContext = React.createContext();
@@ -77,7 +96,7 @@ const AppProvider = ({ children }) => {
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
-    }, 3000);
+    }, 2000);
   };
 
   const addUserToLocalStorage = ({ user, token, location }) => {
@@ -157,6 +176,54 @@ const AppProvider = ({ children }) => {
     }
     clearAlert()
   };
+
+  const handleChange = ({name, value}) => {
+    dispatch({ type: HANDLE_CHANGE, payload: {name, value} })
+  }
+  const clearValues = () => {
+    dispatch({type: CLEAR_VALUES })
+  }
+  const createTask = async () => {
+    dispatch({type: CREATE_TASK_BEGIN})
+    try {
+      const {title, details, taskLocation, taskType, status} = state
+      await authFetch.post("/tasks", {
+        title, 
+        details, 
+        taskLocation, 
+        taskType, 
+        status
+      })
+      dispatch({type: CREATE_TASK_SUCCESS})
+      dispatch({type: CLEAR_VALUES})
+    } catch (error) {
+      if(error.response.status === 401) return
+      dispatch({type: CREATE_TASK_ERROR, payload: {msg: error.response.data.message}}
+        )
+    }
+    clearAlert()
+  }
+  const getTasks = async () => {
+    let url = `/tasks`
+    dispatch({type: GET_TASKS_BEGIN})
+    try {
+      const {data} = await authFetch(url)
+      const { tasks, totalTasks, numOfPages} = data
+      dispatch({
+        type: GET_TASKS_SUCCESS,
+        payload: {
+          tasks,
+          totalTasks,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      console.log(error.response)
+      //logoutUser()
+    }
+    clearAlert()
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -167,6 +234,10 @@ const AppProvider = ({ children }) => {
         toggleSidebar,
         logoutUser,
         updateUser,
+        handleChange,
+        clearValues,
+        createTask,
+        getTasks,
       }}
     >
       {children}

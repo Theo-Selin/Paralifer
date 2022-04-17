@@ -12,6 +12,13 @@ import {
     UPDATE_USER_BEGIN,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_ERROR,
+    HANDLE_CHANGE,
+    CLEAR_VALUES,
+    CREATE_TASK_BEGIN,
+    CREATE_TASK_SUCCESS,
+    CREATE_TASK_ERROR,
+    GET_TASKS_BEGIN,
+    GET_TASKS_SUCCESS
 } from "./actions"
 
 import { initialState } from "./appContext"
@@ -43,7 +50,7 @@ const reducer = (state, action) => {
             token: action.payload.token, 
             user: action.payload.user, 
             userLocation: action.payload.location, 
-            jobLocation: action.payload.location,
+            taskLocation: action.payload.location,
             showAlert: true,
             alertType: "success",
             alertText: "User created! Redirecting..."
@@ -68,7 +75,7 @@ const reducer = (state, action) => {
             token: action.payload.token, 
             user: action.payload.user, 
             userLocation: action.payload.location, 
-            jobLocation: action.payload.location,
+            taskLocation: action.payload.location,
             showAlert: true,
             alertType: "success",
             alertText: "Login successful! Redirecting..."
@@ -94,7 +101,7 @@ const reducer = (state, action) => {
             ...initialState, 
             user: null, 
             token: null, 
-            jobLocation: "", 
+            taskLocation: "", 
             userLocation: ""}
     }
     if(action.type === UPDATE_USER_BEGIN){
@@ -107,7 +114,7 @@ const reducer = (state, action) => {
             token: action.payload.token, 
             user: action.payload.user, 
             userLocation: action.payload.location, 
-            jobLocation: action.payload.location,
+            taskLocation: action.payload.location,
             showAlert: true,
             alertType: "success",
             alertText: "User Profile Updated"
@@ -120,6 +127,61 @@ const reducer = (state, action) => {
             showAlert: true,
             alertType: "danger",
             alertText: action.payload.msg
+        }
+    }
+    if(action.type === HANDLE_CHANGE){
+        return { 
+            ...state, 
+            [action.payload.name]: action.payload.value,
+        }
+    }
+    if(action.type === CLEAR_VALUES){
+
+        const initialState = {
+          isEditing: false,
+          editTaskId: "",
+          details: "",
+          title: "",
+          taskLocation: state.userLocation || "",
+          taskType: "practice",
+          status: "pending",
+        };
+        return { 
+            ...state, 
+            ...initialState,
+        }
+    }
+    if(action.type == CREATE_TASK_BEGIN){
+        return {...state, isLoading: true}
+    }
+    if(action.type === CREATE_TASK_SUCCESS){
+        return { 
+            ...state, 
+            isLoading: false, 
+            showAlert: true,
+            alertType: "success",
+            alertText: "new job created"
+        }
+    }
+    if(action.type === CREATE_TASK_ERROR){
+        return { 
+            ...state, 
+            isLoading: false, 
+            showAlert: true,
+            alertType: "danger",
+            alertText: action.payload.msg
+        }
+    }
+    if(action.type == GET_TASKS_BEGIN){
+        return {...state, isLoading: true, showAlert: false}
+    }
+    if(action.type === GET_TASKS_SUCCESS){
+        return { 
+            ...state, 
+            isLoading: false, 
+            tasks: action.payload.tasks,
+            totalTasks: action.payload.totalTasks,
+            numOfPages: action.payload.numOfPages,
         }
     }
     throw new Error(`no such action : ${action.type}`)

@@ -13,7 +13,8 @@ const createTask = async (req, res) => {
     res.status(StatusCodes.CREATED).json({ task })
 }
 const getAllTasks = async (req, res) => {
-    res.send("get all tasks")
+    const tasks = await Task.find({createdBy: req.user.userId})
+    res.status(StatusCodes.OK).json({tasks, totalTasks: tasks.length, numOfPages: 1 })
 }
 const updateTask = async (req, res) => {
     res.send("update a task")
