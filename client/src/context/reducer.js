@@ -164,7 +164,7 @@ const reducer = (state, action) => {
             isLoading: false, 
             showAlert: true,
             alertType: "success",
-            alertText: "new job created"
+            alertText: "new task created"
         }
     }
     if(action.type === CREATE_TASK_ERROR){

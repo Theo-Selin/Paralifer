@@ -7,8 +7,24 @@ import Navbar from "./Navbar"
 import SearchContainer from "./SearchContainer"
 import SmallSidebar from "./SmallSidebar"
 import TasksContainer from "./TasksContainer"
+import StatsContainer from "./StatsContainer"
+import Loading from './Loading'
+import ChartsContainer from './ChartsContainer'
 
 
 
 
-export { Logo, FormRow, Alert, Navbar, BigSidebar, SmallSidebar, FormRowSelect, TasksContainer, SearchContainer}
+export {
+  Logo,
+  FormRow,
+  Alert,
+  Navbar,
+  BigSidebar,
+  SmallSidebar,
+  FormRowSelect,
+  TasksContainer,
+  SearchContainer,
+  StatsContainer,
+  Loading,
+  ChartsContainer,
+};

@@ -48,8 +48,8 @@ const initialState = {
   details: "",
   title: "",
   taskLocation: userLocation || "",
-  taskTypeOptions: ["quit", "practice", "create", "relax"],
-  taskType: "practice",
+  taskTypeOptions: ["Quitting", "Practice", "Create", "Relaxing"],
+  taskType: "Practice",
   statusOptions: ["started", "finished", "pending"],
   status: "pending",
   tasks: [],
@@ -107,7 +107,7 @@ const AppProvider = ({ children }) => {
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
-    }, 2000);
+    }, 1000);
   };
 
   const addUserToLocalStorage = ({ user, token, location }) => {
