@@ -24,6 +24,7 @@ import {
   CREATE_TASK_ERROR,
   GET_TASKS_BEGIN,
   GET_TASKS_SUCCESS,
+  SET_EDIT_TASK,
   CLEAR_FILTERS,
   CHANGE_PAGE,
   SHOW_STATS_BEGIN,
@@ -241,7 +242,10 @@ const AppProvider = ({ children }) => {
   }
 
   const setEditTask = (id) => {
-    console.log(`set edit job : ${id}`)
+    dispatch({type: SET_EDIT_TASK, payload: {id}})
+  }
+  const editTask = () => {
+    console.log("edit task")
   }
   const deleteTask = (id) => {
     console.log(`delete job : ${id}`)
@@ -289,6 +293,7 @@ const AppProvider = ({ children }) => {
         showStats,
         clearFilters,
         changePage,
+        editTask,
       }}
     >
       {children}

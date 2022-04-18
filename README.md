@@ -6,4 +6,4 @@ used to format date and time
 
 TO DO
 1. Login user refactoring
-2. Edit, Delete task
+2. 35 Edit, Delete task

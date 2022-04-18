@@ -19,6 +19,7 @@ import {
     CREATE_TASK_ERROR,
     GET_TASKS_BEGIN,
     GET_TASKS_SUCCESS,
+    SET_EDIT_TASK,
     CLEAR_FILTERS,
     CHANGE_PAGE,
     SHOW_STATS_BEGIN,
@@ -214,6 +215,20 @@ const reducer = (state, action) => {
       }
       if (action.type === CHANGE_PAGE) {
         return { ...state, page: action.payload.page }
+      }
+      if (action.type === SET_EDIT_TASK) {
+        const task = state.tasks.find((task) => task._id === action.payload.id)
+        const {_id, title, details, taskLocation, taskType, status} = task
+        return {
+            ...state, 
+            isEditing: true, 
+            editTaskId: _id, 
+            title, 
+            details, 
+            taskLocation, 
+            taskType, 
+            status
+        }
       }
     throw new Error(`no such action : ${action.type}`)
 }

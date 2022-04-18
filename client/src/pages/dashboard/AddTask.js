@@ -17,6 +17,7 @@ const AddTask = () => {
         handleChange,
         clearValues,
         createTask,
+        editTask,
     } = useAppContext()
 
     const handleSubmit = e => {
@@ -26,7 +27,7 @@ const AddTask = () => {
             return
         }
         if(isEditing) {
-          // eventually editTask()
+          editTask()
           return
         }
         createTask()
