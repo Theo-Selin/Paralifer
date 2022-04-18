@@ -13,13 +13,13 @@ const TaskSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum:["started", "finished", "pending"],
-        default: "pending",
+        enum:["Started", "Finished", "Pending"],
+        default: "Pending",
     },
     taskType: {
         type: String,
-        enum:["quit", "practice", "create", "relax"],
-        default: "practice",
+        enum:["Quitting", "Practice", "Create", "Relaxing"],
+        default: "Practice",
     },
     taskLocation: {
         type: String,

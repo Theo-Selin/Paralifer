@@ -18,7 +18,11 @@ import {
     CREATE_TASK_SUCCESS,
     CREATE_TASK_ERROR,
     GET_TASKS_BEGIN,
-    GET_TASKS_SUCCESS
+    GET_TASKS_SUCCESS,
+    CLEAR_FILTERS,
+    CHANGE_PAGE,
+    SHOW_STATS_BEGIN,
+    SHOW_STATS_SUCCESS,
 } from "./actions"
 
 import { initialState } from "./appContext"
@@ -151,7 +155,7 @@ const reducer = (state, action) => {
             ...initialState,
         }
     }
-    if(action.type == CREATE_TASK_BEGIN){
+    if(action.type === CREATE_TASK_BEGIN){
         return {...state, isLoading: true}
     }
     if(action.type === CREATE_TASK_SUCCESS){
@@ -172,7 +176,7 @@ const reducer = (state, action) => {
             alertText: action.payload.msg
         }
     }
-    if(action.type == GET_TASKS_BEGIN){
+    if(action.type === GET_TASKS_BEGIN){
         return {...state, isLoading: true, showAlert: false}
     }
     if(action.type === GET_TASKS_SUCCESS){
@@ -184,6 +188,33 @@ const reducer = (state, action) => {
             numOfPages: action.payload.numOfPages,
         }
     }
+    if (action.type === SHOW_STATS_BEGIN) {
+        return {
+          ...state,
+          isLoading: true,
+          showAlert: false,
+        }
+      }
+      if (action.type === SHOW_STATS_SUCCESS) {
+        return {
+          ...state,
+          isLoading: false,
+          stats: action.payload.stats,
+          monthlyApplications: action.payload.monthlyApplications,
+        }
+      }
+      if (action.type === CLEAR_FILTERS) {
+        return {
+          ...state,
+          search: '',
+          searchStatus: 'all',
+          searchType: 'all',
+          sort: 'latest',
+        }
+      }
+      if (action.type === CHANGE_PAGE) {
+        return { ...state, page: action.payload.page }
+      }
     throw new Error(`no such action : ${action.type}`)
 }
 

@@ -23,7 +23,11 @@ import {
   CREATE_TASK_SUCCESS,
   CREATE_TASK_ERROR,
   GET_TASKS_BEGIN,
-  GET_TASKS_SUCCESS
+  GET_TASKS_SUCCESS,
+  CLEAR_FILTERS,
+  CHANGE_PAGE,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -52,6 +56,13 @@ const initialState = {
   totalTasks: 0,
   numOfPages: 1,
   page: 1,
+  stats: {},
+  monthlyApplications: [],
+  search: '',
+  searchStatus: 'all',
+  searchType: 'all',
+  sort: 'latest',
+  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 };
 
 const AppContext = React.createContext();
@@ -203,12 +214,18 @@ const AppProvider = ({ children }) => {
     }
     clearAlert()
   }
+
   const getTasks = async () => {
-    let url = `/tasks`
-    dispatch({type: GET_TASKS_BEGIN})
+    const { page, search, searchStatus, searchType, sort } = state
+
+    let url = `/tasks?page=${page}&status=${searchStatus}&taskType=${searchType}&sort=${sort}`
+    if (search) {
+      url = url + `&search=${search}`
+    }
+    dispatch({ type: GET_TASKS_BEGIN })
     try {
-      const {data} = await authFetch(url)
-      const { tasks, totalTasks, numOfPages} = data
+      const { data } = await authFetch(url)
+      const { tasks, totalTasks, numOfPages } = data
       dispatch({
         type: GET_TASKS_SUCCESS,
         payload: {
@@ -218,7 +235,6 @@ const AppProvider = ({ children }) => {
         },
       })
     } catch (error) {
-      console.log(error.response)
       //logoutUser()
     }
     clearAlert()
@@ -229,6 +245,29 @@ const AppProvider = ({ children }) => {
   }
   const deleteTask = (id) => {
     console.log(`delete job : ${id}`)
+  }
+
+  const showStats = async () => {
+    dispatch({ type: SHOW_STATS_BEGIN })
+    try {
+      const { data } = await authFetch('/tasks/stats')
+      dispatch({
+        type: SHOW_STATS_SUCCESS,
+        payload: {
+          stats: data.defaultStats,
+          monthlyApplications: data.monthlyApplications,
+        },
+      })
+    } catch (error) {
+      logoutUser()
+    }
+    clearAlert()
+  }
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS })
+  }
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
 
   return (
@@ -247,6 +286,9 @@ const AppProvider = ({ children }) => {
         getTasks,
         setEditTask,
         deleteTask,
+        showStats,
+        clearFilters,
+        changePage,
       }}
     >
       {children}
