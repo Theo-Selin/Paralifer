@@ -55,8 +55,6 @@ const getAllTasks = async (req, res) => {
     result = result.sort('-title')
   }
 
-  //
-
   // setup pagination
   const page = Number(req.query.page) || 1
   const limit = Number(req.query.limit) || 10
@@ -71,6 +69,7 @@ const getAllTasks = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ tasks, totalTasks, numOfPages })
 }
+
 const updateTask = async (req, res) => {
   const { id: taskId } = req.params
   const { details, title } = req.body
@@ -83,7 +82,6 @@ const updateTask = async (req, res) => {
   if (!task) {
     throw new NotFoundError(`No task with id :${taskId}`)
   }
-  // check permissions
 
   checkPermissions(req.user, task.createdBy)
 
@@ -109,6 +107,7 @@ const deleteTask = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ msg: 'Success! Task removed' })
 }
+
 const showStats = async (req, res) => {
   let stats = await Task.aggregate([
     { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },

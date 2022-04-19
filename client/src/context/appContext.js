@@ -25,10 +25,14 @@ import {
   GET_TASKS_BEGIN,
   GET_TASKS_SUCCESS,
   SET_EDIT_TASK,
+  EDIT_TASK_BEGIN,
+  EDIT_TASK_SUCCESS,
+  EDIT_TASK_ERROR,
   CLEAR_FILTERS,
   CHANGE_PAGE,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
+  DELETE_TASK_BEGIN,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -244,11 +248,36 @@ const AppProvider = ({ children }) => {
   const setEditTask = (id) => {
     dispatch({type: SET_EDIT_TASK, payload: {id}})
   }
-  const editTask = () => {
-    console.log("edit task")
+
+  const editTask = async () => {
+    dispatch({type: EDIT_TASK_BEGIN})
+    try {
+      const {title, details, taskLocation, taskType, status} = state
+      await authFetch.patch(`/tasks/${state.editTaskId}`, {
+        title, 
+        details, 
+        taskLocation, 
+        taskType, 
+        status
+      })
+      dispatch({type: EDIT_TASK_SUCCESS})
+      dispatch({type: CLEAR_VALUES})
+    } catch (error) {
+      if(error.response.status === 401) return
+      dispatch({type: EDIT_TASK_ERROR, payload: {msg: error.response.data.message}})
+    }
+    clearAlert()
   }
-  const deleteTask = (id) => {
-    console.log(`delete job : ${id}`)
+
+  const deleteTask = async (taskId) => {
+    dispatch({type: DELETE_TASK_BEGIN})
+    try {
+      await authFetch.delete(`/tasks/${taskId}`)
+      getTasks()
+    } catch (error) {
+      console.log(error.response)
+      // logoutUser()
+    }
   }
 
   const showStats = async () => {

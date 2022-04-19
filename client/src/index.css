@@ -53,7 +53,7 @@ html {
   --textColor: var(--grey-900);
   --borderRadius: 0.25rem;
   --letterSpacing: 1px;
-  --transition: 0.3s ease-in-out all;
+  --transition: 0.2s ease-in-out all;
   --max-width: 1120px;
   --fixed-width: 500px;
   --fluid-width: 90vw;
@@ -209,14 +209,10 @@ ul {
   width: 90vw;
   max-width: var(--fixed-width);
   background: var(--white);
-  border-radius: var(--borderRadius);
   box-shadow: var(--shadow-2);
   padding: 2rem 2.5rem;
-  margin: 3rem auto;
+  margin: auto;
   transition: var(--transition);
-}
-.form:hover {
-  box-shadow: var(--shadow-4);
 }
 .form-label {
   display: block;
