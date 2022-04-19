@@ -42,16 +42,13 @@ const Wrapper = styled.article`
     }
   }
   .pending {
-    background: #fcefc7;
     color: #e9b949;
   }
   .started {
-    background: #e0e8f9;
     color: #647acb;
   }
   .finished {
-    color: #d66a6a;
-    background: #ffeeee;
+    color: #50C878;
   }
   .content {
     padding: 1rem 1.5rem;

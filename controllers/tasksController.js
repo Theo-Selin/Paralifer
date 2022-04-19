@@ -9,6 +9,7 @@ import checkPermissions from '../utils/checkPermissions.js'
 import mongoose from 'mongoose'
 import moment from 'moment'
 
+// CREATE TASK //
 const createTask = async (req, res) => {
   const { title, details } = req.body
 
@@ -19,14 +20,17 @@ const createTask = async (req, res) => {
   const task = await Task.create(req.body)
   res.status(StatusCodes.CREATED).json({ task })
 }
+
+// GET ALL TASKS //
 const getAllTasks = async (req, res) => {
   const { status, taskType, sort, search } = req.query
 
   const queryObject = {
     createdBy: req.user.userId,
+    status: ["started", "pending"]
   }
-  // add stuff based on condition
 
+  // SEARCH, STATUS, TYPE //
   if (status && status !== 'all') {
     queryObject.status = status
   }
@@ -36,12 +40,10 @@ const getAllTasks = async (req, res) => {
   if (search) {
     queryObject.title = { $regex: search, $options: 'i' }
   }
-  // NO AWAIT
 
   let result = Task.find(queryObject)
 
-  // chain sort conditions
-
+  // SORTING FILTERS //
   if (sort === 'latest') {
     result = result.sort('-createdAt')
   }
@@ -55,21 +57,11 @@ const getAllTasks = async (req, res) => {
     result = result.sort('-title')
   }
 
-  // setup pagination
-  const page = Number(req.query.page) || 1
-  const limit = Number(req.query.limit) || 10
-  const skip = (page - 1) * limit
-
-  result = result.skip(skip).limit(limit)
-
   const tasks = await result
-
-  const totalTasks = await Task.countDocuments(queryObject)
-  const numOfPages = Math.ceil(totalTasks / limit)
-
-  res.status(StatusCodes.OK).json({ tasks, totalTasks, numOfPages })
+  res.status(StatusCodes.OK).json({ tasks })
 }
 
+// UPDATE TASK //
 const updateTask = async (req, res) => {
   const { id: taskId } = req.params
   const { details, title } = req.body
@@ -92,9 +84,10 @@ const updateTask = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ updatedTask })
 }
+
+// DELETE TASK //
 const deleteTask = async (req, res) => {
   const { id: taskId } = req.params
-
   const task = await Task.findOne({ _id: taskId })
 
   if (!task) {
@@ -102,17 +95,18 @@ const deleteTask = async (req, res) => {
   }
 
   checkPermissions(req.user, task.createdBy)
-
   await task.remove()
 
   res.status(StatusCodes.OK).json({ msg: 'Success! Task removed' })
 }
 
+// STATS //
 const showStats = async (req, res) => {
   let stats = await Task.aggregate([
     { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
     { $group: { _id: '$status', count: { $sum: 1 } } },
   ])
+
   stats = stats.reduce((acc, curr) => {
     const { _id: title, count } = curr
     acc[title] = count
@@ -136,6 +130,7 @@ const showStats = async (req, res) => {
     { $sort: { '_id.year': -1, '_id.month': -1 } },
     { $limit: 6 },
   ])
+
   monthlyApplications = monthlyApplications
     .map((item) => {
       const {

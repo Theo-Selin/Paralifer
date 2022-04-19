@@ -27,7 +27,7 @@ const TasksContainer = () => {
     if(tasks.length === 0) {
         return (
         <Wrapper>
-            <h2>You don't have any matching tasks</h2>
+            <p>You don't have any matching tasks</p>
         </Wrapper>
         )
     }

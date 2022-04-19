@@ -1,6 +1,6 @@
 import { useAppContext } from '../context/appContext'
 import StatItem from './StatItem'
-import { FaSuitcaseRolling, FaCalendarCheck, FaBug } from 'react-icons/fa'
+import { FaClock, FaWalking, FaCheck } from 'react-icons/fa'
 import Wrapper from '../assets/wrappers/StatsContainer'
 
 const StatsContainer = () => {
@@ -10,22 +10,22 @@ const StatsContainer = () => {
     {
       title: 'pending',
       count: stats.pending || 0,
-      icon: <FaSuitcaseRolling />,
+      icon: <FaClock />,
       color: '#e9b949',
       bcg: '#fcefc7',
     },
     {
       title: 'started',
       count: stats.started || 0,
-      icon: <FaCalendarCheck />,
+      icon: <FaWalking />,
       color: '#647acb',
       bcg: '#e0e8f9',
     },
     {
       title: 'finished',
       count: stats.finished || 0,
-      icon: <FaBug />,
-      color: '#d66a6a',
+      icon: <FaCheck />,
+      color: '#50C878',
       bcg: '#ffeeee',
     },
   ]
