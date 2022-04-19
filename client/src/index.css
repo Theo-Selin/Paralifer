@@ -45,7 +45,7 @@ html {
 
   /* fonts  */
   --headingFont: 'Roboto Condensed', Sans-Serif;
-  --bodyFont: 'Cabin', Sans-Serif;
+  --bodyFont: 'Roboto Condensed', Sans-Serif;
   --small-text: 0.875rem;
   --extra-small-text: 0.7em;
   /* rest of the vars */
